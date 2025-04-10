@@ -13,7 +13,7 @@ def home():
     return "Welcome to the sensor fault detection"
 
 
-@app.route ("/train")
+@app.route ('/train')
 def train_route():
     train_pipeline = TraininingPipeline()
     train_pipeline.run_pipeline()
@@ -35,9 +35,8 @@ def upload ():
     
     except Exception as e :
         raise CustomException (e,sys)
-    
-
 
 if __name__== "__main__":
-    app.run (host="0.0.0.",port=5000,debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
+
 

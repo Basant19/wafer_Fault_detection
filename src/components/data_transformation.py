@@ -42,9 +42,7 @@ class DataTransformation:
         try:
             data = pd.read_csv (feature_store_file_path)
 
-            data.rename(columns={"Good/BAD": TARGET_COLUMN},inplace=True)
-
-          
+            data.rename(columns={"Good/BAD": TARGET_COLUMN},inplace=True)          
     
             return data
         

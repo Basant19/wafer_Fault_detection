@@ -196,10 +196,7 @@ class ModelTrainer:
             logging.info(f"Best found model on both training and testing dataset")
 
  
-            custom_model = VisibilityModel(
-                preprocessing_object=preprocessor,
-                trained_model_object=best_model
-            )
+    
 
             logging.info(
                 f"Saving model at path: {self.model_trainer_config.trained_model_path}"
@@ -209,17 +206,11 @@ class ModelTrainer:
 
             self.utils.save_object(
                 file_path=self.model_trainer_config.trained_model_path,
-                obj=custom_model,
+                obj=best_model
             )
 
-            self.utils.upload_file(from_filename= self.model_trainer_config.trained_model_path,
-                                   to_filename="model.pkl",
-                                   bucket_name= AWS_S3_BUCKET_NAME)
 
-            
-
-            return best_model_score
-
+            return self.model_trainer_config.trained_model_path
         except Exception as e:
             raise CustomException(e, sys)
 

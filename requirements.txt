@@ -28,6 +28,6 @@ websockets
 wincertstore
 xgboost
 jupyter
-
+flask
 
 -e .
