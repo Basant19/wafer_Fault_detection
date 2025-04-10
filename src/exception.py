@@ -40,9 +40,10 @@ def error_message_detail(error, error_detail:sys):
 
         error= str (error)
 
-        error_message = f"Error occured python script name [{0}] line number [{1}] error message [{2}]".format(
-        file_name,linenumber, str(error)
-        )
+        error_message = "Error occurred python script name [{}] line number [{}] error message [{}]".format(
+        file_name, linenumber, str(error))
+
+        
         return error_message
          
 
