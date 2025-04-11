@@ -5,7 +5,8 @@ from src.logger import logging
 
 from src.exception import CustomException
 import sys
-from flask import request
+from flask import Request
+
 from src.constant import *
 from src.utils.main_utils import MainUtils
 
@@ -23,7 +24,7 @@ class PredictionPipelineConfig:
 
 
 class PredictionPipeline:
-    def __init__(self, request: request):
+    def __init__(self, request: Request):
 
         self.request = request
         self.utils = MainUtils()
@@ -45,6 +46,18 @@ class PredictionPipeline:
         """
 
         try:
+            if 'file' not in self.request.files:
+
+                logging.info("No file part in the request.")
+                raise CustomException("No file part in the request.", sys)
+            
+            input_csv_file = self.request.files['file']
+        
+            if input_csv_file.filename == '':
+                logging.info("No file selected for uploading.")
+                raise CustomException("No file selected for uploading.", sys)
+            
+            
             pred_file_input_dir = "prediction_artifacts"
             os.makedirs(pred_file_input_dir, exist_ok=True)
 
@@ -74,10 +87,9 @@ class PredictionPipeline:
                 raise CustomException(e, sys)
         
     def get_predicted_dataframe(self, input_dataframe_path:pd.DataFrame):
-
    
         try:
-
+           
             prediction_column_name : str = TARGET_COLUMN
             input_dataframe: pd.DataFrame = pd.read_csv(input_dataframe_path)
             
@@ -102,6 +114,7 @@ class PredictionPipeline:
         
     def run_pipeline(self):
         try:
+            logging.info("Prediction pipeline started")
             input_csv_path = self.save_input_files()
             self.get_predicted_dataframe(input_csv_path)
 
@@ -109,5 +122,4 @@ class PredictionPipeline:
 
         except Exception as e:
             raise CustomException(e,sys)
-
 

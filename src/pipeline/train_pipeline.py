@@ -33,7 +33,7 @@ class TraininingPipeline:
         try:
             model_trainer = ModelTrainer()
             model_score = model_trainer.initiate_model_trainer(
-                train_arr, test_arr
+                train_arr, test_arr, preprocessor_path
             )
             return model_score
             
