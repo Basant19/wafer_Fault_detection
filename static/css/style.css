@@ -17,6 +17,13 @@ h1 {
     text-shadow: 2px 2px 4px rgba(56, 189, 248, 0.5);
 }
 
+h2 {
+    font-family: 'JetBrains Mono', monospace;
+    color: #38bdf8;
+    text-shadow: 2px 2px 4px rgba(56, 189, 248, 0.5);
+}
+
+
 .dropzone {
     border: 3px dashed #38bdf8;
     border-radius: 15px;

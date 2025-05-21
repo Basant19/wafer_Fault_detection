@@ -1,24 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wafer Fault Detection</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wafer Fault Detection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../static/css/style.css"/>
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100">
-    <div class="container text-center">
-        <h1 class="mb-4">Upload CSV for the Prediction</h1>
-        <form action="/predict" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow bg-light">
-            <div class="dropzone border border-2 border-dashed rounded p-5 mb-3 bg-white">
-                <h3>Drop file to upload</h3>
-                <input type="file" class="form-control mt-3" name="file" accept=".csv" required>
-            </div>
-            <button type="submit" class="btn btn-success">Upload File</button>
-        </form>
+  <div class="container text-center">
+    <h1 class="mb-4">Click on the train button first</h1>
+    <h2 class="mb-4">Upload CSV for the Prediction</h2>
+    <!-- 🔘 Train Button -->
+    <button id="trainBtn" class="btn btn-primary mb-4">Train</button>
+
+    <!-- 🔄 Loader (hidden by default) -->
+    <div id="loader" class="spinner-border text-primary mb-3" style="display: none;" role="status">
+      <span class="visually-hidden">Training...</span>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- ✅ Upload Form (disabled until training completes) -->
+    <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow bg-light">
+      <div class="dropzone border border-2 border-dashed rounded p-5 mb-3 bg-white">
+        <h3>Drop file to upload</h3>
+        <input type="file" id="fileInput" class="form-control mt-3" name="file" accept=".csv" required disabled>
+      </div>
+      <button type="submit" id="uploadBtn" class="btn btn-success" disabled>Upload File</button>
+    </form>
+  </div>
+
+  <!-- ✅ Toast container -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="trainToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">Training completed successfully!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isTrained = false;
+
+    document.getElementById('trainBtn').addEventListener('click', function () {
+      const loader = document.getElementById('loader');
+      loader.style.display = 'inline-block'; // Show loader
+
+      fetch('/train')
+        .then(response => response.json())
+        .then(data => {
+          loader.style.display = 'none'; // Hide loader
+
+          if (data.status === 'success') {
+            isTrained = true;
+            // Enable upload input and button
+            document.getElementById('fileInput').disabled = false;
+            document.getElementById('uploadBtn').disabled = false;
+
+            // Show toast
+            const toast = new bootstrap.Toast(document.getElementById('trainToast'));
+            toast.show();
+          } else {
+            alert("Training failed.");
+          }
+        })
+        .catch(error => {
+          loader.style.display = 'none'; // Hide loader on error
+          alert("Error during training: " + error);
+        });
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function (event) {
+      if (!isTrained) {
+        alert("Please train the model first before uploading.");
+        event.preventDefault();
+      }
+    });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

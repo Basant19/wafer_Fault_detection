@@ -175,3 +175,10 @@ cython_debug/
 
 # Ignore constants with sensitive data
 src/constant/
+
+#for docker 
+.dockerignore
+docker-compose.override.yml
+docker-compose.yml
+
+
