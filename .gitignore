@@ -173,8 +173,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Ignore constants with sensitive data
-src/constant/
+
 
 #for docker 
 .dockerignore
