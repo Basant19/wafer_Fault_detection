@@ -8,13 +8,13 @@ from src.pipeline.predict_pipeline import PredictionPipeline
 
 app = Flask(__name__)
 
-# ✅ Home route now renders the upload interface with Train button
+#  Home route now renders the upload interface with Train button
 @app.route("/")
 def home():
     return render_template("upload_file.html")
 
 
-# ✅ Train route called by JS on Train button click
+# Train route called by JS on Train button click
 @app.route('/train')
 def train_route():
     try:
@@ -25,7 +25,7 @@ def train_route():
         raise CustomException(e, sys)
 
 
-# ✅ Predict route (called when user uploads a CSV)
+# Predict route (called when user uploads a CSV)
 @app.route('/predict', methods=['POST', 'GET'])
 def upload():
     try:
