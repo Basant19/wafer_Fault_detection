@@ -180,4 +180,5 @@ cython_debug/
 docker-compose.override.yml
 docker-compose.yml
 
-
+#adding .github folder to ignore
+.github/
